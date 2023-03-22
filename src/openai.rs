@@ -4,10 +4,12 @@ use async_openai::{
     Client,
 };
 use indoc::formatdoc;
+use tracing::debug;
 use url::Url;
 
 use crate::Action;
 
+#[derive(Debug)]
 pub struct Conversation {
     goal: String,
     client: Client,
@@ -26,23 +28,21 @@ impl Conversation {
                 role: Role::System,
                 content: formatdoc!("
                     You are an agent controlling a browser. You are given an objective that you are trying to achieve, the URL of the current website, and a simplified markup description of the page contents, which looks like this:
-
-                    ```
-                        <p id=0>text</p>
-                        <link id=1 href=\"link url\">text</link>
-                        <button id=2>text</button>
-                        <input id=3>placeholder</input>
-                        <img id=4 alt=\"image description\"/>
-                    ```
+                    <p id=0>text</p>
+                    <link id=1 href=\"link url\">text</link>
+                    <button id=2>text</button>
+                    <input id=3>placeholder</input>
+                    <img id=4 alt=\"image description\"/>
 
                     You must respond with ONLY one of the following commands AND NOTHING ELSE:
                         - CLICK X - click on a given element. You can only click on links, buttons, and inputs!
-                        - TYPESUBMIT X \"TEXT\" -  type the specified text into the input with id X and press ENTER
-                        - END \"TEXT\" - Respond to the user with the specified text once you have completed the objective
+                        - TYPE X \"TEXT\" - type the specified text into the input with id X and press ENTER
+                        - ANSWER \"TEXT\" - Respond to the user with the specified text once you have completed the objective
                 "),
         }]}
     }
 
+    #[tracing::instrument]
     pub async fn request_action(&mut self, url: &str, page_content: &str) -> Result<Action> {
         self.enforce_context_length(url)?;
 
@@ -68,6 +68,14 @@ impl Conversation {
             )
             .await?;
 
+        debug!(
+            "Got a response, used {} tokens.",
+            response
+                .usage
+                .expect("Usage should be present.")
+                .total_tokens
+        );
+
         let message = &response
             .choices
             .get(0)
@@ -80,8 +88,6 @@ impl Conversation {
             content: message.content.clone(),
         });
 
-        dbg!(&message.content);
-
         message.content.clone().try_into()
     }
 
@@ -89,6 +95,7 @@ impl Conversation {
         let new_url = Url::parse(url)?;
 
         if self.url.as_ref().map(Url::host) != Some(new_url.host()) {
+            debug!("Host changed, clearing context.");
             self.messages = self.messages.drain(..1).collect();
         }
 

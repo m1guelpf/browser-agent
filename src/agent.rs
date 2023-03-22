@@ -3,8 +3,8 @@ use anyhow::{anyhow, bail, Result};
 #[derive(Debug)]
 pub enum Action {
     Click(usize),
-    TypeSubmit(usize, String),
-    End(String),
+    Answer(String),
+    Type(usize, String),
 }
 
 impl TryFrom<String> for Action {
@@ -20,7 +20,7 @@ impl TryFrom<String> for Action {
 
                 Ok(Self::Click(id))
             }
-            "TYPESUBMIT" => {
+            "TYPE" => {
                 let id = parts.next().unwrap().parse()?;
 
                 let text = parts
@@ -29,16 +29,16 @@ impl TryFrom<String> for Action {
                     .trim_matches('"')
                     .to_string();
 
-                Ok(Self::TypeSubmit(id, text))
+                Ok(Self::Type(id, text))
             }
-            "END" => {
+            "ANSWER" => {
                 let text = parts
                     .collect::<Vec<_>>()
                     .join(" ")
                     .trim_matches('"')
                     .to_string();
 
-                Ok(Self::End(text))
+                Ok(Self::Answer(text))
             }
             _ => bail!("Unknown command."),
         }

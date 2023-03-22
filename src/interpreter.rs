@@ -1,7 +1,7 @@
 use anyhow::{anyhow, Context, Result};
 use chromiumoxide::Element;
 
-pub async fn translate(elements: &[Element]) -> Result<String> {
+pub async fn translate(elements: &[Element], should_include_p: bool) -> Result<String> {
     let mut summary = Vec::new();
 
     for (i, element) in elements.iter().enumerate() {
@@ -23,6 +23,10 @@ pub async fn translate(elements: &[Element]) -> Result<String> {
                 summary.push(format!("<button id={i}>{inner_text}</button>"));
             }
             "P" => {
+                if !should_include_p {
+                    continue;
+                }
+
                 let Some(inner_text) = inner_text else {
                     continue
                 };
