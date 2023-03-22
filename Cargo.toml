@@ -1,0 +1,16 @@
+[package]
+name = "browser-agent"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.70"
+async-openai = "0.10.0"
+chromiumoxide = { version = "0.5.0", default-features = false, features = ["tokio-runtime", "_fetcher-native-tokio"] }
+clap = { version = "4.1.11", features = ["derive"] }
+indoc = "2.0.1"
+tokio = { version = "1.26.0", features = ["full"] }
+tokio-stream = "0.1.12"
+url = "2.3.1"
