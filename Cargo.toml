@@ -1,5 +1,5 @@
 [package]
-name = "browser_agent"
+name = "browser-agent"
 version = "0.1.0"
 edition = "2021"
 
