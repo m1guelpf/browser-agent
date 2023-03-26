@@ -1,3 +1,4 @@
 /target
 /browser
 /user_data
+.env

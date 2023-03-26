@@ -22,31 +22,39 @@ pub struct Conversation {
     messages: Vec<ChatCompletionRequestMessage>,
 }
 
-impl Conversation {
-    /// Create a new conversation with GPT-4.
-    #[must_use]
-    pub fn new(goal: String) -> Self {
+impl Default for Conversation {
+    fn default() -> Self {
         Self {
-            goal,
+            goal: String::from("Visit 10 webpages."),
             url: None,
             client: Client::new(),
             messages: vec![ChatCompletionRequestMessage {
                 name: None,
                 role: Role::System,
                 content: formatdoc!("
-                    You are an agent controlling a browser. You are given an objective that you are trying to achieve, the URL of the current website, and a simplified markup description of the page contents, which looks like this:
+                    You are an agent controlling a browser. You are given the URL of the current website, and a simplified markup description of the page contents, which looks like this:
                     <p id=0>text</p>
                     <link id=1 href=\"link url\">text</link>
                     <button id=2>text</button>
                     <input id=3>placeholder</input>
                     <img id=4 alt=\"image description\"/>
 
+                    You are not given a goal but should create and alter a goal based on the previous actions you have taken. Your initial goal should be to visit at least 10 webpages and update your goal based on the content of those page.
+
                     You must respond with ONLY one of the following commands AND NOTHING ELSE:
                         - CLICK X - click on a given element. You can only click on links, buttons, and inputs!
                         - TYPE X \"TEXT\" - type the specified text into the input with id X and press ENTER
-                        - ANSWER \"TEXT\" - Respond to the user with the specified text once you have completed the objective
+                        - GOAL \"TEXT\" - Outputs your updated goal.
                 "),
         }]}
+    }
+}
+
+impl Conversation {
+    /// Create a new conversation with GPT-4.
+    #[must_use]
+    pub fn new() -> Self {
+        Self::default()
     }
 
     /// Request and execute an action from GPT-4.
