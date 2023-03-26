@@ -23,6 +23,9 @@ use tracing::debug;
 /// * If the browser cannot be launched.
 /// * If the browser handler cannot be spawned.
 pub async fn init(browser_path: &Path, user_data_dir: &Path, headless: bool) -> Result<Browser> {
+    std::fs::create_dir_all(browser_path)?;
+    std::fs::create_dir_all(user_data_dir)?;
+
     let browser_info = ensure_browser(browser_path).await?;
 
     let mut config = BrowserConfig::builder()

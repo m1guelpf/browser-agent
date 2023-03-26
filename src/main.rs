@@ -55,8 +55,6 @@ async fn main() -> Result<()> {
         .init();
 
     let mut conversation = Conversation::new(args.goal);
-    std::fs::create_dir_all("./browser")?;
-    std::fs::create_dir_all("./user_data")?;
     let mut browser = browser::init(
         Path::new("./browser"),
         Path::new("./user_data"),
