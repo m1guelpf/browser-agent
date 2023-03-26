@@ -1,17 +1,15 @@
-# Run Wild
+# A browser AI agent, using GPT-4
 
-`run-wild` extends [m1guelpf](https://github.com/m1guelpf)'s [browser-agent](https://github.com/m1guelpf/browser-agent) project by allowing gpt4 to alter it's goal. This is very dumb and probably ought not exist, but c'est la vie.
-
-At it's core, `run-wild` bridges GPT-4 and a headless Chromium browser, automating actions as self-directed by it's goal. It takes the form of a Rust CLI, but also exports most of the internals as a library for others to use.
+This project provides a bridge between GPT-4 and a headless Chromium browser, allowing you to automate actions simply by describing them to the program. It takes the form of a Rust CLI, but also exports most of the internals as a library for others to use.
 
 ## Installation
 
-`run-wild` is built using Rust, so you'll need to install the Rust toolchain. You can do this by following the instructions at [rustup.rs](https://rustup.rs/).
+`browser-agent` is built using Rust, so you'll need to install the Rust toolchain. You can do this by following the instructions at [rustup.rs](https://rustup.rs/).
 
-Once you have Rust installed, you can install `run-wild` by running:
+Once you have Rust installed, you can install `browser-agent` by running:
 
 ```bash
-cargo install run-wild
+cargo install browser-agent
 ```
 
 You should also place your OpenAI API key in the `OPENAI_API_KEY` environment variable. This key should have access to the `gpt-4` model.
@@ -21,7 +19,10 @@ You can copy the contents of the `example.env` file to a `.env` file in the root
 ## Usage
 
 ```
-Usage: run-wild [OPTIONS] <GOAL>
+Usage: browser-agent [OPTIONS] <GOAL>
+
+Arguments:
+  <GOAL>  The goal for the agent to achieve
 
 Options:
       --visual                Whether to show the browser window. Warning: this makes the agent more unreliable
