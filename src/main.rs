@@ -13,6 +13,9 @@ use browser_agent::{browser, translate, Action, Conversation};
 #[derive(Debug, Parser)]
 #[command(author, version, about, long_about = None)]
 struct Cli {
+    /// The goal for the agent to achieve
+    goal: String,
+
     /// Whether to show the browser window. Warning: this makes the agent more unreliable.
     #[arg(long)]
     visual: bool,
@@ -49,7 +52,9 @@ async fn main() -> Result<()> {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    let mut conversation = Conversation::new();
+    let mut conversation = Conversation::new(args.goal);
+    std::fs::create_dir_all("./browser")?;
+    std::fs::create_dir_all("./user_data")?;
     let mut browser = browser::init(
         Path::new("./browser"),
         Path::new("./user_data"),
@@ -97,7 +102,7 @@ async fn main() -> Result<()> {
                 element.type_str(text).await?;
                 element.press_key("Enter").await?;
             }
-            Action::Goal(text) => {
+            Action::Answer(text) => {
                 println!("{text}");
                 break;
             }

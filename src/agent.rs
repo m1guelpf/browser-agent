@@ -6,9 +6,9 @@ pub enum Action {
     /// Click on an element.
     /// The usize is the id of the element.
     Click(usize),
-
-    /// Outputs the update goal.
-    Goal(String),
+    /// Respond to the user with the given text.
+    /// The String is the text to respond with.
+    Answer(String),
 
     /// Type the given text into the given element and press ENTER.
     /// The usize is the id of the element, and the String is the text to type.
@@ -39,14 +39,14 @@ impl TryFrom<String> for Action {
 
                 Ok(Self::Type(id, text))
             }
-            "GOAL" => {
+            "ANSWER" => {
                 let text = parts
                     .collect::<Vec<_>>()
                     .join(" ")
                     .trim_matches('"')
                     .to_string();
 
-                Ok(Self::Goal(text))
+                Ok(Self::Answer(text))
             }
             _ => bail!("Unknown command, got {command}"),
         }
