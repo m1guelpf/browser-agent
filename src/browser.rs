@@ -3,7 +3,7 @@ use chromiumoxide::{
     fetcher::BrowserFetcherRevisionInfo, Browser, BrowserConfig, BrowserFetcher,
     BrowserFetcherOptions, Page,
 };
-use std::path::Path;
+use std::{fs, path::Path};
 use tokio::time::{sleep, Duration};
 use tokio_stream::StreamExt;
 use tracing::debug;
@@ -23,8 +23,8 @@ use tracing::debug;
 /// * If the browser cannot be launched.
 /// * If the browser handler cannot be spawned.
 pub async fn init(browser_path: &Path, user_data_dir: &Path, headless: bool) -> Result<Browser> {
-    std::fs::create_dir_all(browser_path)?;
-    std::fs::create_dir_all(user_data_dir)?;
+    fs::create_dir_all(browser_path)?;
+    fs::create_dir_all(user_data_dir)?;
 
     let browser_info = ensure_browser(browser_path).await?;
 
