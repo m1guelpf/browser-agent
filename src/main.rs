@@ -1,8 +1,8 @@
 #![warn(clippy::all, clippy::pedantic, clippy::nursery)]
 
+use std::path::Path;
 use anyhow::{anyhow, Result};
 use clap::Parser;
-use std::path::Path;
 use tracing::{debug, info, trace, Level};
 use tracing_subscriber::{
     prelude::__tracing_subscriber_SubscriberExt, util::SubscriberInitExt, EnvFilter,
@@ -31,6 +31,8 @@ struct Cli {
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    dotenv::dotenv()?;
+
     let args = Cli::parse();
 
     tracing_subscriber::registry()

@@ -14,6 +14,8 @@ cargo install browser-agent
 
 You should also place your OpenAI API key in the `OPENAI_API_KEY` environment variable. This key should have access to the `gpt-4` model.
 
+You can copy the contents of the `example.env` file to a `.env` file in the root of the project, and fill in the `OPENAI_API_KEY` variable. The `.env` file is ignored by git, so you don't have to worry about accidentally committing your API key. Note though, `.env.example` is not ignored, so you should not change that file.
+
 ## Usage
 
 ```
