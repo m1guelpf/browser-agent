@@ -40,7 +40,7 @@ impl TryFrom<String> for Action {
 
                 Ok(Self::Answer(text))
             }
-            _ => bail!("Unknown command."),
+            _ => bail!("Unknown command, got {command}"),
         }
     }
 }

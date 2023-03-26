@@ -50,7 +50,7 @@ impl Conversation {
             name: None,
             role: Role::User,
             content: format!(
-                "OBJECTIVE: {}\nCURRENT URL: {url}\nPAGE CONTENT:{page_content}",
+                "OBJECTIVE: {}\nCURRENT URL: {url}\nPAGE CONTENT: {page_content}",
                 self.goal
             ),
         });
