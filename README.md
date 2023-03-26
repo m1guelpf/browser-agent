@@ -12,6 +12,8 @@ Once you have Rust installed, you can install `browser-agent` by running:
 cargo install browser-agent
 ```
 
+You should also place your OpenAI API key in the `OPENAI_API_KEY` environment variable. This key should have access to the `gpt-4` model.
+
 ## Usage
 
 ```
