@@ -1,3 +1,5 @@
+#![warn(clippy::all, clippy::pedantic, clippy::nursery, clippy::cargo)]
+
 mod agent;
 pub mod browser;
 mod interpreter;

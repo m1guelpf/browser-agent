@@ -8,6 +8,20 @@ use tokio::time::{sleep, Duration};
 use tokio_stream::StreamExt;
 use tracing::debug;
 
+/// Starts the browser and returns a handle to it.
+///
+/// # Arguments
+///
+/// * `browser_path` - The path to the browser executable (will be downloaded if not found).
+/// * `user_data_dir` - The path to the user data directory (will be created if not found).
+/// * `headless` - Whether to run the browser in headless mode.
+///
+/// # Errors
+///
+/// * If the browser executable cannot be found or downloaded.
+/// * If the user data directory cannot be created.
+/// * If the browser cannot be launched.
+/// * If the browser handler cannot be spawned.
 pub async fn init(browser_path: &Path, user_data_dir: &Path, headless: bool) -> Result<Browser> {
     let browser_info = ensure_browser(browser_path).await?;
 
@@ -39,6 +53,11 @@ async fn ensure_browser(path: &Path) -> Result<BrowserFetcherRevisionInfo> {
     Ok(fetcher.fetch().await?)
 }
 
+/// Waits for the page to navigate or for 5 seconds to pass.
+///
+/// # Arguments
+///
+/// * `page` - The page to wait for.
 pub async fn wait_for_page(page: &Page) {
     tokio::select! {
         _ = page.wait_for_navigation() => {},

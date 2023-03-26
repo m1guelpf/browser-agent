@@ -1,6 +1,16 @@
 use anyhow::{anyhow, Context, Result};
 use chromiumoxide::Element;
 
+/// Translates the given elements into a format GPT-4 can understand.
+///
+/// # Arguments
+///
+/// * `elements` - The elements to translate.
+/// * `should_include_p` - Whether to include paragraphs in the translation.
+///
+/// # Errors
+///
+/// * If the elements cannot be translated.
 pub async fn translate(elements: &[Element], should_include_p: bool) -> Result<String> {
     let mut summary = Vec::new();
 
@@ -13,7 +23,7 @@ pub async fn translate(elements: &[Element], should_include_p: bool) -> Result<S
             .context("Failed to get tag name")?
             .ok_or_else(|| anyhow!("Failed to get tag name"))?
             .as_str()
-            .unwrap()
+            .context("Failed to get tag name")?
         {
             "BUTTON" => {
                 let Some(inner_text) = inner_text else {

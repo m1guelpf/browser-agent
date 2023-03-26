@@ -9,15 +9,22 @@ use url::Url;
 
 use crate::Action;
 
+/// A conversation with GPT-4.
 #[derive(Debug)]
 pub struct Conversation {
+    /// The goal for the agent to achieve.
     goal: String,
+    /// The client used to communicate with OpenAI.
     client: Client,
+    /// The URL of the current page.
     url: Option<Url>,
+    /// A collection of messages sent to GPT-4.
     messages: Vec<ChatCompletionRequestMessage>,
 }
 
 impl Conversation {
+    /// Create a new conversation with GPT-4.
+    #[must_use]
     pub fn new(goal: String) -> Self {
         Self {
             goal,
@@ -42,6 +49,7 @@ impl Conversation {
         }]}
     }
 
+    /// Request and execute an action from GPT-4.
     #[tracing::instrument]
     pub async fn request_action(&mut self, url: &str, page_content: &str) -> Result<Action> {
         self.enforce_context_length(url)?;

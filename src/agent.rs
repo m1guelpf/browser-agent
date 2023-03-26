@@ -1,9 +1,17 @@
 use anyhow::{anyhow, bail, Result};
 
+/// Actions that can be taken by the browser.
 #[derive(Debug)]
 pub enum Action {
+    /// Click on an element.
+    /// The usize is the id of the element.
     Click(usize),
+    /// Respond to the user with the given text.
+    /// The String is the text to respond with.
     Answer(String),
+
+    /// Type the given text into the given element and press ENTER.
+    /// The usize is the id of the element, and the String is the text to type.
     Type(usize, String),
 }
 

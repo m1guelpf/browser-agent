@@ -1,7 +1,13 @@
 [package]
-name = "browser-agent"
-version = "0.1.0"
+license = "MIT"
 edition = "2021"
+version = "0.1.0"
+name = "browser-agent"
+description = "A browser AI agent, using GPT-4."
+repository = "https://github.com/m1guelpf/browser-agent"
+keywords = ["gpt-4", "openai", "ai", "browser", "agent"]
+authors = ["Miguel Piedrafita <soy@miguelpiedrafita.com>"]
+categories = ["command-line-utilities", "command-line-interface"]
 
 [dependencies]
 url = "2.3.1"
