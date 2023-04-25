@@ -51,6 +51,12 @@ pub async fn translate(elements: &[Element], should_include_p: bool) -> Result<S
                 summary.push(format!("<img id={i} alt=\"{alt_text}\"/>"));
             }
             "A" => {
+                // Do not include links that have headings inside of them. Many websites use this
+                // so that you can link directly to a page section
+                if element.find_elements("h1,h2,h3,h4,h5,h6").await?.len() > 0 {
+                    continue;
+                }
+
                 let Some(inner_text) = inner_text else {
                     continue
                 };
