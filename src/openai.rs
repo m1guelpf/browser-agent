@@ -58,7 +58,7 @@ impl Conversation {
             name: None,
             role: Role::User,
             content: format!(
-                "OBJECTIVE: {}\nCURRENT URL: {url}\nPAGE CONTENT: {page_content}",
+                "OBJECTIVE: {}\nCURRENT URL: {url}\nPAGE CONTENT: {page_content}. Remember to ONLY respond in the format of CLICK, TYPE, or ANSWER!",
                 self.goal
             ),
         });
@@ -89,6 +89,8 @@ impl Conversation {
             .get(0)
             .ok_or_else(|| anyhow!("No choices returned from OpenAI.",))?
             .message;
+
+        debug!("Message: {}", message.content.clone());
 
         self.messages.push(ChatCompletionRequestMessage {
             name: None,
